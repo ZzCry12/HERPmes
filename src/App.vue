@@ -67,7 +67,6 @@ export default {
 </script>
 
 <style scoped>
-/* Agrega estilos personalizados según sea necesario */
 .logo-enter-active, .logo-leave-active {
   transition: opacity 1s;
 }
