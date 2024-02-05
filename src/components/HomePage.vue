@@ -18,7 +18,7 @@
       </v-col>
     </v-row>
     <br>
-    <!-- Carrusel de imágenes -->
+    <!-- Carrusel de imágenes
     <v-carousel cycle height="400" hide-delimiter-background show-arrows="hover">
       <v-carousel-item
           src="/carrusel1.jpg"
@@ -34,7 +34,7 @@
           src="/carrusel3.jpg"
           cover
       ></v-carousel-item>
-    </v-carousel>
+    </v-carousel>-->
 
     <!-- Logos y nombres de departamentos -->
     <v-row justify="center" class="mt-4">
