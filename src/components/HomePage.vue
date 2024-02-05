@@ -49,8 +49,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <br>
-    <br>
+
   </v-main>
 </template>
 

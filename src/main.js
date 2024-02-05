@@ -15,12 +15,16 @@ import HomePage from './components/HomePage.vue';
 import PagContacto from './components/pag_contacto.vue';
 import AboutUs from './components/pag_aboutus.vue';
 import Testimonios from './components/pag_testimonios.vue';
+import Servicios from './components/pag_servicios.vue';
+import Productos from './components/pag_productos.vue';
 
 const routes = [
     { path: '/', component: HomePage, name: 'HomePage' }, // Ruta para la página de inicio
     { path: '/pag_contacto', component: PagContacto, name: 'pag_contacto' }, //contacto
     { path: '/pag_aboutus', component: AboutUs, name: 'pag_aboutus' }, //Aboutus
     { path: '/pag_testimonios', component: Testimonios, name: 'pag_testimonios' }, //pag contacto
+    { path: '/pag_servicios', component: Servicios, name: 'pag_servicios' }, //pag servicios
+    { path: '/pag_productos', component: Productos, name: 'pag_productos' }, //pag productos
 ];
 
 const router = createRouter({

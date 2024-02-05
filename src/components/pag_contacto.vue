@@ -1,5 +1,8 @@
 <template>
   <center>
+    <br>
+<br>
+
   <v-container fluid fill-height class="mt-8">
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="6">
@@ -62,59 +65,96 @@
 
           <!-- Formulario de contacto -->
           <v-form @submit.prevent="submitForm">
-            <v-text-field
-                v-model="formData.name"
-                label="Nombre"
-                required
-            ></v-text-field>
-
-            <v-text-field
-                v-model="formData.email"
-                label="Correo Electrónico"
-                type="email"
-                required
-            ></v-text-field>
-
-            <v-textarea
-                v-model="formData.message"
-                label="Mensaje"
-                required
-            ></v-textarea>
+            <v-text-field v-model="formData.name" label="Nombre" required></v-text-field>
+            <v-text-field v-model="formData.email" label="Correo Electrónico" type="email" required></v-text-field>
+            <v-textarea v-model="formData.message" label="Mensaje" required></v-textarea>
 
             <v-row justify="center" class="mt-4">
               <v-btn type="submit" color="primary">Enviar</v-btn>
             </v-row>
           </v-form>
         </v-card>
-
       </v-col>
     </v-row>
   </v-container>
+    <v-snackbar v-model="snackbar" :timeout="5000" color="success" top right botttom="30px">
+      <v-icon left>mdi-check-circle</v-icon>
+      Mensaje enviado con éxito
+    </v-snackbar>
+    <v-snackbar v-model="errorSnackbar" :timeout="5000" color="error" top right botttom="30px">
+      <v-icon left>mdi-alert-circle</v-icon>
+      Por favor, completa todos los campos
+    </v-snackbar>
   </center>
 </template>
 
 <script>
+import * as emailjs from "@emailjs/browser";
+
 export default {
   data() {
     return {
       formData: {
-        name: '',
-        email: '',
-        message: '',
+        name: "",
+        email: "",
+        message: "",
       },
+      snackbar: false,
+      errorSnackbar: false,
     };
   },
   methods: {
     submitForm() {
-      //hay q implementar logica para enviar formulario
-      console.log('Formulario enviado:', this.formData);
-      // Reinicia el formulario después de enviarlo
-      this.formData = {
-        name: '',
-        email: '',
-        message: '',
-      };
+      // Verifica que todos los campos estén completos
+      if (this.formData.name && this.formData.email && this.formData.message) {
+        // Envia el formulario usando Email.js
+        emailjs
+            .send("service_jfc6g4o", "template_96fyo8p", {
+              from_name: this.formData.name,
+              from_email: this.formData.email,
+              message: this.formData.message,
+            })
+            .then((response) => {
+              console.log("Formulario enviado:", response);
+              // Reinicia el formulario después de enviarlo
+              this.formData = {
+                name: "",
+                email: "",
+                message: "",
+              };
+              // Muestra la confirmación con icono
+              this.snackbar = true;
+              // Cierra el mensaje después de 5 segundos
+              setTimeout(() => {
+                this.snackbar = false;
+              }, 5000);
+            })
+            .catch((error) => {
+              console.error("Error al enviar el formulario:", error);
+            });
+      } else {
+        // Muestra mensaje de error si los campos no están completos
+        this.errorSnackbar = true;
+        // Cierra el mensaje de error después de 5 segundos
+        setTimeout(() => {
+          this.errorSnackbar = false;
+        }, 5000);
+      }
     },
+  },
+  mounted() {
+    const emailjsScript = document.createElement("script");
+    emailjsScript.src =
+        "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    document.head.appendChild(emailjsScript);
+
+    emailjsScript.onload = () => {
+      (function () {
+        emailjs.init({
+          publicKey: "vWJTVU9sfIt1USWeG", // Reemplaza con tu clave pública
+        });
+      })();
+    };
   },
 };
 </script>

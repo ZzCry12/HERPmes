@@ -1,5 +1,8 @@
 <template>
   <div>
+    <br>
+    <br>
+    <br>
     <h1>
       <strong>Compañías que han encontrado una notable mejora en sus procesos</strong>
     </h1>
@@ -175,3 +178,5 @@ h3 {
   text-overflow: ellipsis;
 }
 </style>
+<script setup>
+</script>

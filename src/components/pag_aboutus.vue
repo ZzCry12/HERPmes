@@ -1,4 +1,6 @@
 <template>
+  <br>
+  <br>
   <v-container fluid class="mt-8">
     <!-- Sección de Bienvenida -->
     <v-row align="center">
@@ -50,7 +52,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-btn icon @click="toggleProjects(department)">
-                  <v-icon :class="{ 'rotate-icon': department.showProjects }">mdi-chevron-down</v-icon>
+                  <v-icon :class="{ 'rotate-icon': department.showProjects }">mdi-eye</v-icon>
                 </v-btn>
                 <v-btn text @click="toggleProjects(department)">Ver Proyectos</v-btn>
               </v-card-actions>
@@ -72,11 +74,63 @@
               </v-card>
             </v-col>
           </v-row>
+          <!-- Ventana emergente para mostrar detalles del proyecto -->
+          <v-dialog v-model="projectDialog" max-width="800">
+            <v-card>
+              <v-card-title>{{ selectedProject.title }} - Detalles</v-card-title>
+              <v-divider></v-divider>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="4">
+                    <v-img :src="selectedProject.image" alt="Imagen del proyecto" class="project-image"></v-img>
+                  </v-col>
+                  <v-col cols="12" md="8">
+                    <!-- Contenido del proyecto en la ventana emergente -->
+                    <v-card-text>{{ selectedProject.description }}</v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-text>{{ selectedProject.details }}</v-card-text>
+                    <!-- Agregar el nuevo campo 'details' -->
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-btn color="primary" @click="projectDialog = false">Cerrar</v-btn>
+                    </v-card-actions>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Ventana emergente para mostrar proyectos -->
+    <v-dialog v-model="dialog" max-width="800">
+      <v-card>
+        <v-card-title>{{ selectedDepartment.name }} - Proyectos</v-card-title>
+        <v-divider></v-divider>
+        <v-container>
+          <v-row>
+            <v-col v-for="project in selectedDepartment.projects" :key="project.title" cols="12" md="4">
+              <!-- Contenido del proyecto en la ventana emergente -->
+              <v-card class="mb-4 project-card">
+                <v-img :src="project.image" alt="Imagen del proyecto" class="project-image"></v-img>
+                <v-card-subtitle>{{ project.category }}</v-card-subtitle>
+                <v-divider></v-divider>
+                <v-card-text>{{ project.description }}</v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-btn text color="primary" @click="viewProject(project, selectedDepartment.name)">Ver Detalles</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-card-actions>
+          <v-btn color="primary" @click="dialog = false">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
-  <br>
   <br>
 </template>
 
@@ -96,9 +150,23 @@ export default {
               title: 'Proyecto Nuixó 1',
               category: 'Desarrollo Digital',
               description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
               image: '/cientific.jpg',
             },
-            // Agrega más proyectos según sea necesario
+            {
+              title: 'Proyecto Nuixó 1',
+              category: 'Desarrollo Digital',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/cientific.jpg',
+            },
+            {
+              title: 'Proyecto Nuixó 1',
+              category: 'Desarrollo Digital',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/cientific.jpg',
+            },
           ],
           showProjects: false,
         },
@@ -113,10 +181,26 @@ export default {
               title: 'Proyecto Anchor 1',
               category: 'Planificación Estratégica',
               description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
               image: '/auto.jpg',
+
             },
-            // Agrega más proyectos según sea necesario
+            {
+              title: 'Proyecto Anchor 1',
+              category: 'Planificación Estratégica',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/auto.jpg',},
+            {
+              title: 'Proyecto Anchor 1',
+              category: 'Planificación Estratégica',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/auto.jpg',
+
+            }
           ],
+
           showProjects: false,
         },
         {
@@ -130,22 +214,51 @@ export default {
               title: 'Proyecto CodeCrafters 1',
               category: 'Experiencias Digitales',
               description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
               image: '/taper.jpg',
             },
-            // Agrega más proyectos según sea necesario
+            {
+              title: 'Proyecto CodeCrafters 1',
+              category: 'Experiencias Digitales',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/taper.jpg',
+            },            {
+              title: 'Proyecto CodeCrafters 1',
+              category: 'Experiencias Digitales',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/taper.jpg',
+            },            {
+              title: 'Proyecto CodeCrafters 1',
+              category: 'Experiencias Digitales',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+              details: 'Detalles adicionales sobre el Proyecto Nuixó 1.',
+              image: '/taper.jpg',
+            },
+
           ],
           showProjects: false,
         },
       ],
+      selectedDepartment: null,
+      dialog: false,
+      projectDialog: false,
     };
   },
   methods: {
     viewProject(project, department) {
       // Implementa la lógica para ver detalles del proyecto
       console.log(`Ver detalles del proyecto ${project.title} del departamento ${department}`);
+      this.selectedProject = project;
+      // Mostrar la ventana emergente solo si selectedProject no es nulo o indefinido
+      if (this.selectedProject) {
+        this.projectDialog = true;}
     },
     toggleProjects(department) {
-      department.showProjects = !department.showProjects;
+      this.selectedDepartment = department;
+      this.dialog = true;
+      this.projectDialog = false;
     },
   },
 };
